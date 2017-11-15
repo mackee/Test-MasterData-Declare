@@ -8,10 +8,14 @@ master_data {
         item => "t/fixture/item.csv",
         item_effect => "t/fixture/item_effect.csv";
 
-    table item => "id",
-        like_number 1 => 10;
-    table item_effect => "id",
-        like_number 1 => 10;
+    subtest "item.id must be like a number and between 1 to 10" => sub { 
+        table item => "id",
+            like_number 1 => 10;
+    };
+    subtest "item_effect.id must be like a number and between 1 to 10" => sub { 
+        table item_effect => "id",
+            like_number 1 => 10;
+    };
 
     table item => "id",
         if_column name => "Short Coffee",

@@ -246,15 +246,58 @@ __END__
 
 =head1 NAME
 
-Test::MasterData::Declare - It's new $module
+Test::MasterData::Declare - It's testing tool for CSV (and other structures) by DSL.
 
 =head1 SYNOPSIS
 
     use Test::MasterData::Declare;
 
+    master_data {
+        load_csv item => "master-data/item.csv";
+
+        subtest "item.type must be like a number and between 1 to 3" => sub { 
+            table item => "type",
+                like_number => 1 => 3;
+        };
+
+        subtest "item.effect is json structure. effect.energy must be between 1 to 100" => sub { 
+            table item => "effect",
+                if_column type => 1,
+                json energy =>
+                    like_number 1 => 100;
+        }
+    };
+
 =head1 DESCRIPTION
 
-Test::MasterData::Declare is ...
+C<Test::MasterData::Declare> is helper for testing Row like structures.
+
+=head1 FUNCTIONS
+
+=head2 master_data { ... }
+
+There functions are working only in this scope.
+
+=head2 load_csv $table_name => $csv_path, ...;
+
+Load csv from C<$csv_path>. Loaded rows were referenced from C<table>.
+
+=head2 table $table_name => $column_name, $filters_or_expects...
+
+Check column value. C<$filters_or_expects> is a filter functions (ex. C<if_column>), expections (ex. C<$like_number>), scalar value, regexp reference, C<Test2::Compare::*>, etc...
+
+=head2 if_column $column_name => $column_condition...
+
+Filter checking rows. C<$column_condition> is a scalar or Test2::Compare::*.
+
+=head2 like_number $begin => $end
+=head2 like_number $expects
+
+Check value that like a number and between C<$begin> to C<$end> or equals C<$expects>.
+
+=head2 json $key, $inner_key_or_index
+
+Inflate column to structure data by json.
 
 =head1 LICENSE
 
