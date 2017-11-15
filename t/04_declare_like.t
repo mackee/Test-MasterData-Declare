@@ -10,13 +10,18 @@ master_data {
 
     table item => "id",
         like_number 1 => 10;
+    table item_effect => "id",
+        like_number 1 => 10;
 
+    table item => "id",
+        if_column name => "Short Coffee",
+        like_number 1;
 
     table item_effect => "effect_parameters",
         if_column effect_type => 1,
         json night_resistance =>
             like_number 1 => 100,
-            sub { $_[0] % 10 == 0 };
+            sub { $_[0] % 5 == 0 };
 };
 
 done_testing;

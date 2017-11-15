@@ -4,11 +4,11 @@ use Test::More;
 use Test::MasterData::Declare;
 
 master_data {
-    load_csv item => "t/item.csv";
+    load_csv item => "t/fixture/item.csv";
 
     expect_row item => sub {
         my $row = shift;
-        like $row->{id}, qr/\A[0-9]+\z/;
+        like $row->{name}, qr/\A[A-Za-z0-9 ]+\z/;
     };
 };
 
