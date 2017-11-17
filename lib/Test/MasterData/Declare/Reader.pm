@@ -19,18 +19,23 @@ sub read_csv_from {
     my $table_name    = $args{table_name};
     my $identifier_key = $args{identifier_key};
 
-    my $csv_rows = csv(
-        in                 => $filepath,
-        headers            => "auto",
-        allow_loose_quotes => 0,
-    ) or croak(Text::CSV->error_diag());
+    open my $fh, "<:encoding(utf8)", $filepath or croak "cannot open $filepath";
+    my $csv = Text::CSV->new({
+        binary             => 1,
+        blank_is_undef     => 1,
+        eol                => "\n",
+    }) or croak Text::CSV->error_diag();
 
+    $csv->header($fh);
     my @rows;
-    for my $row (@$csv_rows) {
+    while (my $row = $csv->getline_hr($fh)) {
+        my $lineno = $csv->record_number;
         push @rows, Test::MasterData::Declare::Row->new(
             table_name     => $table_name,
-            row            => $row,
+            _row           => $row,
             identifier_key => $identifier_key,
+            lineno         => $lineno,
+            file           => $filepath,
         );
     }
 

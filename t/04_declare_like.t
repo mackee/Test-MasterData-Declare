@@ -1,6 +1,6 @@
 use strict;
 use warnings;
-use Test::More;
+use Test2::V0;
 use Test::MasterData::Declare;
 
 master_data {
@@ -17,9 +17,22 @@ master_data {
             like_number 1 => 10;
     };
 
-    table item => "id",
-        if_column name => "Short Coffee",
-        like_number 1;
+    my $event = intercept {
+        table item => "id",
+            if_column name => "Short Coffee",
+            like_number 2;
+    };
+    is $event, array {
+        item object {
+            call pass => 0;
+        };
+        item object {
+            call message => match qr!Failed test at t/04_declare_like.t line \d+\.!;
+        };
+        item object {
+            prop blessed => "Test2::Event::Diag",
+        };
+    };
 
     table item_effect => "effect_parameters",
         if_column effect_type => 1,

@@ -31,8 +31,6 @@ our $DEFAULT_IDENTIFIER_KEY = "id";
 
 use Test::MasterData::Declare::Runner;
 use Test::MasterData::Declare::Reader;
-use Test::MasterData::Declare::Validator;
-use Test::MasterData::Declare::Filter;
 
 my $runner;
 
@@ -95,14 +93,16 @@ sub like_number {
 
 
     my $operator = "$begin <= ... <= $end";
+    my $name = "Between";
     if ($begin == $end) {
         $operator = "$begin == ...";
+        $name = "Equal";
     }
 
     my $cus = Test2::Compare::Custom->new(
-        name => "Equal",
+        name     => $name,,
         operator => $operator,
-        code => sub {
+        code     => sub {
             my %args = @_;
             return 0 unless number($args{got});
 

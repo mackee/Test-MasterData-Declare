@@ -5,22 +5,40 @@ use warnings;
 
 use Class::Accessor::Lite (
     new => 1,
-    ro  => [qw/table_name row identifier_key/],
+    rw  => [qw/_cached_compare_row/],
+    ro  => [qw/table_name _row identifier_key lineno file/],
 );
 
 use Test2::Compare::Number qw/number/;
+use Test2::Compare::String;
 use Carp qw/croak/;
 use JSON;
 
 my $json = JSON->new->utf8;
 
+sub row {
+    my $self = shift;
+
+    my $cached_compare_row = $self->_cached_compare_row;
+    return $cached_compare_row if $cached_compare_row;
+
+    my %compare_row;
+    for my $key (keys %{$self->_row}) {
+        $compare_row{$key} = $self->_row->{$key};
+    }
+
+    $self->_cached_compare_row(\%compare_row);
+    return \%compare_row;
+}
+
 sub source {
     my ($self, $column) = @_;
 
     return sprintf(
-        "%s.%s %s=%s",
+        "%s.%s %s=%s file=%s line=%s",
         $self->table_name, $column,
         $self->identifier_key, $self->row->{$self->identifier_key},
+        $self->file, $self->lineno,
     );
 }
 
