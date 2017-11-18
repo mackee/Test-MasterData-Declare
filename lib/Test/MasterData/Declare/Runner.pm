@@ -9,6 +9,8 @@ use Class::Accessor::Lite (
     ro  => [qw/code/],
 );
 
+use Carp qw/croak/;
+
 sub run {
     my $self = shift;
 
@@ -27,6 +29,9 @@ sub add_reader_to_bucket {
 sub rows {
     my ($self, $table_name) = @_;
 
+    if (!defined $self->bucket || !exists $self->bucket->{$table_name}) {
+        croak "$table_name is not exists.";
+    }
     my $reader = $self->bucket->{$table_name};
     my $rows = $reader->rows;
     return $rows;
