@@ -14,6 +14,13 @@ use Scalar::Util qw/blessed/;
 
 use Carp qw/croak/;
 
+%Carp::Internal = (
+    %Carp::Internal,
+    "Test::MasterData::Declare"             => 1,
+    "Test::MasterData::Declare::CompareRow" => 1,
+    "Test::MasterData::Declare::Row"        => 1,
+);
+
 use parent "Exporter";
 our @EXPORT = qw/
     master_data
@@ -31,6 +38,7 @@ our $DEFAULT_IDENTIFIER_KEY = "id";
 
 use Test::MasterData::Declare::Runner;
 use Test::MasterData::Declare::Reader;
+use Test::MasterData::Declare::CompareRow;
 
 my $runner;
 
@@ -62,6 +70,21 @@ sub load_csv {
     }
 }
 
+sub row_hash :prototype(&) {
+    Test2::Compare::build("Test::MasterData::Declare::CompareRow", @_)
+}
+
+sub row_json {
+    my ($column, @keys) = @_;
+    my $check = pop @keys;
+
+    my $build = Test2::Compare::get_build();
+    croak "row_json must be with-in Test::MasterData::Declare::CompareRow"
+        unless $build->isa("Test::MasterData::Declare::CompareRow");
+
+    $build->add_json_field($column, @keys, $check);
+}
+
 sub table {
     my ($table_name, $column, @filters_or_expects) = @_;
     my $ctx = context();
@@ -71,10 +94,8 @@ sub table {
         for my $fe (@filters_or_expects) {
             if (blessed $fe && $fe->isa("Test2::Compare::Base")) {
                 all_items
-                    object {
-                        call row => hash {
-                            field $column => $fe;
-                        };
+                    row_hash {
+                        field $column => $fe;
                     };
             }
             elsif (ref $fe eq "CODE") {
@@ -161,13 +182,13 @@ sub json {
         my $column = shift;
         my $ctx = context();
         all_items
-            object {
+            row_hash {
                 for my $f (@funcs) {
                     if (blessed $f && $f->isa("Test2::Compare::Base")) {
-                        call ["json", $column, @keys] => $f;
+                        row_json $column, @keys => $f;
                     }
                     elsif (ref $f eq "CODE") {
-                        call ["json", $column, @keys] => validator(sub {
+                        row_json $column, @keys => validator(sub {
                             my %args = @_;
                             my $got = $args{got};
                             $f->($got);
@@ -187,13 +208,12 @@ sub expect_row {
     my $rows = $runner->rows($table_name);
     like $rows, array {
         all_items
-            object {
-                call row =>
-                    validator(sub {
-                        my %args = @_;
-                        my $got = $args{got};
-                        $func->($got);
-                    });
+            row_hash {
+                validator(sub {
+                    my %args = @_;
+                    my $got = $args{got};
+                    $func->($got);
+                });
         };
     };
 
@@ -226,8 +246,8 @@ sub relation {
     my $ctx = context();
     like $from_rows, array {
         all_items
-            object {
-                call row => validator(sub {
+            row_hash {
+                validator(sub {
                     my %args = @_;
                     my $from_row = $args{got};
                     my @relations = $to_rows_selector->(%$from_row);

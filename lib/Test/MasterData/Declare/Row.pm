@@ -35,10 +35,9 @@ sub source {
     my ($self, $column) = @_;
 
     return sprintf(
-        "%s.%s %s=%s file=%s line=%s",
-        $self->table_name, $column,
+        "%s#%s=%s",
+        $self->file,
         $self->identifier_key, $self->row->{$self->identifier_key},
-        $self->file, $self->lineno,
     );
 }
 
@@ -56,7 +55,7 @@ sub json {
             $out = $out->[$key];
         }
         else {
-            croak "cannot access json attributes: out=$out key=$key";
+            return undef;
         }
     }
 

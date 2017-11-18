@@ -14,7 +14,7 @@ master_data {
     };
     subtest "item_effect.id must be like a number and between 1 to 10" => sub { 
         table item_effect => "id",
-            like_number 1 => 10;
+            like_number 1 => 3;
     };
 
     my $event = intercept {
