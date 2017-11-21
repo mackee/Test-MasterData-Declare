@@ -43,7 +43,7 @@ use Test::MasterData::Declare::CompareRow;
 
 my $runner;
 
-sub master_data :prototype(&) {
+sub master_data (&) {
     my $code = shift;
 
     $runner = Test::MasterData::Declare::Runner->new(
@@ -71,7 +71,7 @@ sub load_csv {
     }
 }
 
-sub row_hash :prototype(&) {
+sub row_hash (&) {
     Test2::Compare::build("Test::MasterData::Declare::CompareRow", @_)
 }
 

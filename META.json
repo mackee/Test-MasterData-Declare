@@ -45,9 +45,9 @@
             "Class::Accessor::Lite" : "0",
             "JSON" : "0",
             "Scalar::Util" : "0",
-            "Test2::V0" : "0",
+            "Test2::Suite" : "0",
             "Test::Simple" : "1.302015",
-            "Text::CSV" : "0",
+            "Text::CSV" : "1.91",
             "perl" : "5.010001"
          }
       }
