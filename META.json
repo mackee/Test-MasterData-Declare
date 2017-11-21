@@ -1,7 +1,7 @@
 {
-   "abstract" : "It's new $module",
+   "abstract" : "It's testing tool for CSV (and other structures) by DSL.",
    "author" : [
-      "mackee <macopy123@gmail.com>"
+      "mackee a.k.a macopy <macopy123@gmail.com>"
    ],
    "dynamic_config" : 0,
    "generated_by" : "Minilla/v3.0.13, CPAN::Meta::Converter version 2.150005",
@@ -42,16 +42,28 @@
       },
       "runtime" : {
          "requires" : {
-            "perl" : "5.008001"
-         }
-      },
-      "test" : {
-         "requires" : {
-            "Test::More" : "0.98"
+            "Class::Accessor::Lite" : "0",
+            "JSON" : "0",
+            "Scalar::Util" : "0",
+            "Test2::V0" : "0",
+            "Test::Simple" : "1.302015",
+            "Text::CSV" : "0",
+            "perl" : "5.010001"
          }
       }
    },
    "release_status" : "unstable",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "https://github.com/mackee/Test-MasterData-Declare/issues"
+      },
+      "homepage" : "https://github.com/mackee/Test-MasterData-Declare",
+      "repository" : {
+         "type" : "git",
+         "url" : "git://github.com/mackee/Test-MasterData-Declare.git",
+         "web" : "https://github.com/mackee/Test-MasterData-Declare"
+      }
+   },
    "version" : "0.01",
    "x_authority" : "cpan:MACOPY",
    "x_serialization_backend" : "JSON::PP version 2.27300"

@@ -1,7 +1,8 @@
 package Test::MasterData::Declare::Reader;
-use 5.008001;
+use 5.010001;
 use strict;
 use warnings;
+use utf8;
 
 use Text::CSV qw/csv/;
 use Carp qw/croak/;

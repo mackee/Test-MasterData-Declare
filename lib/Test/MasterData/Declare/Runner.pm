@@ -1,7 +1,8 @@
 package Test::MasterData::Declare::Runner;
-use 5.008001;
+use 5.010001;
 use strict;
 use warnings;
+use utf8;
 
 use Class::Accessor::Lite (
     new => 1,

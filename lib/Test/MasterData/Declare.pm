@@ -2,6 +2,7 @@ package Test::MasterData::Declare;
 use 5.010001;
 use strict;
 use warnings;
+use utf8;
 
 our $VERSION = "0.01";
 
@@ -290,34 +291,41 @@ Test::MasterData::Declare - It's testing tool for CSV (and other structures) by 
 
 =head1 DESCRIPTION
 
-C<Test::MasterData::Declare> is helper for testing Row like structures.
+C<Test::MasterData::Declare> is a testing tool for row like structures.
+
+B<THE SOFTWARE IS IT'S IN ALPHA QUALITY. IT MAY CHANGE THE API WITHOUT NOTICE.>
 
 =head1 FUNCTIONS
 
-=head2 master_data { ... }
+=head2 C<<  master_data { ... }  >>
 
 There functions are working only in this scope.
 
-=head2 load_csv $table_name => $csv_path, ...;
+=head2 C<< load_csv $table_name => $csv_path, ...; >>
 
 Load csv from C<$csv_path>. Loaded rows were referenced from C<table>.
 
-=head2 table $table_name => $column_name, $filters_or_expects...
+=head2 C<< table $table_name => $column_name, $filters_or_expects... >>
 
 Check column value. C<$filters_or_expects> is a filter functions (ex. C<if_column>), expections (ex. C<$like_number>), scalar value, regexp reference, C<Test2::Compare::*>, etc...
 
-=head2 if_column $column_name => $column_condition...
+=head2 C<< if_column $column_name => $column_condition... >>
 
 Filter checking rows. C<$column_condition> is a scalar or Test2::Compare::*.
 
-=head2 like_number $begin => $end
-=head2 like_number $expects
+=head2 C<< like_number $begin => $end >>
+
+=head2 C<< like_number $expects >>
 
 Check value that like a number and between C<$begin> to C<$end> or equals C<$expects>.
 
-=head2 json $key, $inner_key_or_index
+=head2 C<< json $key, $inner_key_or_index >>
 
 Inflate column to structure data by json.
+
+=head2 C<< relation $from_table => $to_table, $from_column => $to_column >>
+
+Declare relation the C<$drom_table> to C<$to_table>.
 
 =head1 LICENSE
 
@@ -328,7 +336,7 @@ it under the same terms as Perl itself.
 
 =head1 AUTHOR
 
-mackee E<lt>macopy123@gmail.comE<gt>
+mackee a.k.a macopy E<lt>macopy123@gmail.comE<gt>
 
 =cut
 
