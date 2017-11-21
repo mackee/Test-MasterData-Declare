@@ -64,7 +64,7 @@
          "web" : "https://github.com/mackee/Test-MasterData-Declare"
       }
    },
-   "version" : "0.01",
+   "version" : "0.01_01",
    "x_authority" : "cpan:MACOPY",
    "x_serialization_backend" : "JSON::PP version 2.27300"
 }
